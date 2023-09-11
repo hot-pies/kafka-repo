@@ -3,6 +3,7 @@ package com.github.coolhand.kafka.stream;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KafkaStreams;
+import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.kstream.KGroupedStream;
 import org.apache.kafka.streams.kstream.KStream;
@@ -31,32 +32,35 @@ public class FavouriteColorApp {
 
         KStream<String,String> userandcolors = colorsource
                 .filter((key,value) -> value.contains(","))
-                        .mapValues((value)->value.split(",")[1].toLowerCase())
-                                .filter((key,value)->Arrays.asList("red","green","blue").contains(value))
-                                        .selectKey((userid,colours)->colours.split(",")[0].toLowerCase());
+                .selectKey((user,colours)->colours.split(",")[0].toLowerCase())
+                .mapValues((value)->{
+                    if(value!=null){
+                        String[] elements=value.split(",");
+                        if(elements.length >1){
+                            return elements[1].toLowerCase();
+                        }
+                    }
+                    System.out.println("Incomplete input");
+                    return null;
+                })
+//              .mapValues((value)->value.split(",")[1].toLowerCase())
+                .filter((user,color)->Arrays.asList("red","green","blue").contains(color));
+                                        ;
 
         userandcolors.to("user-key-and-color");
 
-//        KTable<String,Long> colorCounts=colorsource
-//                .filter((userid,color)-> color.contains(","))
-//                .filter((userid,color) -> color.equalsIgnoreCase("red") || color.equalsIgnoreCase("blue") || color.equalsIgnoreCase("green"))
-////                .filter((userid,colours)->Arrays.asList("red,green,blue").contains(colours))
-//                .mapValues(String::toLowerCase)
-////                .mapValues(value->value.split(",")[1].toLowerCase())
-//                .flatMapValues(colorName -> Arrays.asList(colorName.split("\\,+")))
-//                .selectKey((userid,color) -> color.split(",")[0].toLowerCase())
-//                .groupByKey()
-//                .count("Counts");
+       KTable<String,String> kTable=builder.table("user-key-and-color");
 
-//        colorCounts.toStream().foreach((userid,color)-> {
-//            System.out.println("User ID : "+userid+" & Color : "+color);
-//        });
-//
-//        colorCounts.to("favourite-color-stream-output");
+        KTable<String, Long> groupedKTable = kTable
+                .groupBy((user, colour) -> new KeyValue<>(colour, colour))
+                .count("CountByColor");
+
+        groupedKTable.toStream().to(Serdes.String(),Serdes.Long(),"favourite-color-stream-output");
 
         KafkaStreams stream=new KafkaStreams(builder,config);
         stream.start();
 
+        System.out.println(stream.toString());
 
     Runtime.getRuntime().addShutdownHook(new Thread(stream::close));
 
