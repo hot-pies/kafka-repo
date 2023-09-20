@@ -2,16 +2,16 @@ package com.coolhand.kafka.steam;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.Serdes;
-import org.apache.kafka.streams.KafkaStreams;
-import org.apache.kafka.streams.StreamsBuilder;
-import org.apache.kafka.streams.StreamsConfig;
-import org.apache.kafka.streams.Topology;
+import org.apache.kafka.streams.*;
 import org.apache.kafka.streams.kstream.Consumed;
 import org.apache.kafka.streams.kstream.Printed;
 import org.apache.kafka.streams.kstream.Produced;
 
+import java.util.Arrays;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 // Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
 // then press Enter. You can now see whitespace characters in your code.
@@ -23,10 +23,23 @@ public class GreetingApp {
         StreamsBuilder builder=new StreamsBuilder();
 
         var greeting_stream= builder.stream("greetings-input", Consumed.with(Serdes.String(),Serdes.String()));
-        greeting_stream.print(Printed.toSysOut());
+        greeting_stream.print(Printed.<String,String>toSysOut().withLabel("greeting_stream"));
 
-        var modified_greeting= greeting_stream.mapValues((key,value)->value.toUpperCase());
-        modified_greeting.print(Printed.toSysOut());
+        var modified_greeting = greeting_stream
+//                .mapValues((key,value)->value.toUpperCase())
+//                .map((key,value)->KeyValue.pair(key,value))
+                .flatMap((key, value) -> {
+                    var newValues = Arrays.asList(value.split("-"));
+                    newValues.forEach(element-> log.info("Split modified greeting : "+element));
+                    return newValues
+                            .stream()
+                            .map(val-> KeyValue.pair(key.toUpperCase(),val.toUpperCase()))
+                            .collect(Collectors.toList());
+                })
+                ;
+
+        modified_greeting
+                .print(Printed.<String,String>toSysOut().withLabel("modified_greeting:"));
 
         modified_greeting.to("greetings-output", Produced.with(Serdes.String(),Serdes.String()));
 
@@ -49,6 +62,9 @@ public class GreetingApp {
         streamConfig.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
         streamConfig.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG,Serdes.String().getClass());
         streamConfig.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG,"earliest");
+        // Set the custom properties
+        streamConfig.put("key.separator", "-");
+        streamConfig.put("parse.key", "true");
 
 
         GreetingApp greetingApp=new GreetingApp();
