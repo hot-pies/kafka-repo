@@ -24,6 +24,10 @@ public class GreetingApp {
 
         var greeting_stream= builder.stream("greetings-input", Consumed.with(Serdes.String(),Serdes.String()));
         greeting_stream.print(Printed.<String,String>toSysOut().withLabel("greeting_stream"));
+        greeting_stream.peek((key, value) -> {
+           log.info("Before modification key : {}, value : {}",key,value);
+        });
+
 
         var modified_greeting = greeting_stream
 //                .mapValues((key,value)->value.toUpperCase())
@@ -35,6 +39,9 @@ public class GreetingApp {
                             .stream()
                             .map(val-> KeyValue.pair(key.toUpperCase(),val.toUpperCase()))
                             .collect(Collectors.toList());
+                })
+                .peek((key, value) -> {
+                    log.info("After modifications : key : {}, value : {}",key,value);
                 })
                 ;
 
