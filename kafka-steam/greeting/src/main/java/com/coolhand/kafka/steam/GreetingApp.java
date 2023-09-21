@@ -6,6 +6,7 @@ import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.*;
 import org.apache.kafka.streams.kstream.Consumed;
+import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.Printed;
 import org.apache.kafka.streams.kstream.Produced;
 
@@ -22,13 +23,17 @@ public class GreetingApp {
     public Topology createTopology(){
         StreamsBuilder builder=new StreamsBuilder();
 
-        var greeting_stream= builder.stream("greetings-input", Consumed.with(Serdes.String(),Serdes.String()));
+        KStream<String,String> greeting_stream= builder.stream("greetings-input"
+//                , Consumed.with(Serdes.String(),Serdes.String())
+        );
         greeting_stream.print(Printed.<String,String>toSysOut().withLabel("greeting_stream"));
         greeting_stream.peek((key, value) -> {
            log.info("Before modification key : {}, value : {}",key,value);
         });
 
-        var greeting_spanish_stream= builder.stream("greetings-spanish-input", Consumed.with(Serdes.String(),Serdes.String()));
+        KStream<String,String> greeting_spanish_stream= builder.stream("greetings-spanish-input"
+//                , Consumed.with(Serdes.String(),Serdes.String())
+        );
         greeting_stream.print(Printed.<String,String>toSysOut().withLabel("greeting_stream"));
         greeting_stream.peek((key, value) -> {
             log.info("Before modification key : {}, value : {}",key,value);
@@ -58,7 +63,9 @@ public class GreetingApp {
         modified_greeting
                 .print(Printed.<String,String>toSysOut().withLabel("modified_greeting:"));
 
-        modified_greeting.to("greetings-output", Produced.with(Serdes.String(),Serdes.String()));
+        modified_greeting.to("greetings-output"
+//                , Produced.with(Serdes.String(),Serdes.String())
+        );
 
 //        KStream<String,String> streamIn = builder.stream("greetings-input");
 
