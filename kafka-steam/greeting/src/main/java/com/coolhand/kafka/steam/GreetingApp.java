@@ -28,18 +28,28 @@ public class GreetingApp {
            log.info("Before modification key : {}, value : {}",key,value);
         });
 
+        var greeting_spanish_stream= builder.stream("greetings-spanish-input", Consumed.with(Serdes.String(),Serdes.String()));
+        greeting_stream.print(Printed.<String,String>toSysOut().withLabel("greeting_stream"));
+        greeting_stream.peek((key, value) -> {
+            log.info("Before modification key : {}, value : {}",key,value);
+        });
 
-        var modified_greeting = greeting_stream
+        var merge_greeting=greeting_stream.merge(greeting_spanish_stream);
+        merge_greeting.peek((key,value)-> log.info("After topic Merge key :{} , value : {} ",key,value));
+
+
+//        var modified_greeting = greeting_stream
+        var modified_greeting = merge_greeting
 //                .mapValues((key,value)->value.toUpperCase())
-//                .map((key,value)->KeyValue.pair(key,value))
-                .flatMap((key, value) -> {
-                    var newValues = Arrays.asList(value.split("-"));
-                    newValues.forEach(element-> log.info("Split modified greeting : "+element));
-                    return newValues
-                            .stream()
-                            .map(val-> KeyValue.pair(key.toUpperCase(),val.toUpperCase()))
-                            .collect(Collectors.toList());
-                })
+                .map((key,value)->KeyValue.pair(key.toUpperCase(),value.toUpperCase()))
+//                .flatMap((key, value) -> {
+//                    var newValues = Arrays.asList(value.split(""));
+////                    newValues.forEach(element-> log.info("Split modified greeting : "+element));
+//                    return newValues
+//                            .stream()
+//                            .map(val-> KeyValue.pair(key.toUpperCase(),val.toUpperCase()))
+//                            .collect(Collectors.toList());
+//                })
                 .peek((key, value) -> {
                     log.info("After modifications : key : {}, value : {}",key,value);
                 })

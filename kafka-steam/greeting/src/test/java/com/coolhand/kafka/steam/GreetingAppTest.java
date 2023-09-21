@@ -1,6 +1,7 @@
 package com.coolhand.kafka.steam;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.apache.kafka.streams.*;
@@ -22,6 +23,9 @@ public class GreetingAppTest {
         Properties config=new Properties();
         config.put(StreamsConfig.APPLICATION_ID_CONFIG,"TestGreeting-Application");
         config.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG,"TestGreeting:123");
+        config.put("parse.key", "true");
+        config.put("key.separator", ":");
+
 
         GreetingApp greetingApp= new GreetingApp();
         Topology tolology=greetingApp.createTopology();
@@ -47,7 +51,7 @@ public class GreetingAppTest {
     @Test
     public void TestGreatingMesageUpperCase(){
         System.out.println("*********** TestTopology ***********");
-        greetingMsgInput("good morning");
+        greetingMsgInput("good:morning");
 
         Assertions.assertEquals(readOutputTopic().readKeyValue(),new KeyValue<>(null,"GOOD MORNING"));
     }
