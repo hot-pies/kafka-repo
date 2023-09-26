@@ -14,8 +14,6 @@ dependencies {
     testImplementation( "org.junit.jupiter:junit-jupiter-engine:5.10.0")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.0")
 
-//    testImplementation(platform("org.junit:junit-bom:5.10.0"))
-//    testImplementation("junit:junit:4.13.2")
     testImplementation("org.apache.kafka:kafka-streams-test-utils:3.5.1")
 
     // https://mvnrepository.com/artifact/org.apache.kafka/kafka-streams
@@ -26,7 +24,15 @@ dependencies {
     implementation("org.slf4j:slf4j-api:1.7.25")
     // https://mvnrepository.com/artifact/org.projectlombok/lombok
 
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.15.2")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.2")
 
+
+
+}
+java {
+    sourceCompatibility = JavaVersion.VERSION_16
+    targetCompatibility = JavaVersion.VERSION_16
 }
 
 tasks.test {

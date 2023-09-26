@@ -1,7 +1,9 @@
 package com.coolhand.kafka.steam;
 
+//import com.coolhand.kafka.steam.launcher.GreetingApp;
+import com.coolhand.kafka.steam.domain.Greeting;
+import com.coolhand.kafka.steam.topology.GreetingTopology;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.apache.kafka.streams.*;
@@ -27,8 +29,9 @@ public class GreetingAppTest {
         config.put("key.separator", ":");
 
 
-        GreetingApp greetingApp= new GreetingApp();
-        Topology tolology=greetingApp.createTopology();
+        GreetingTopology greetingApp= new GreetingTopology();
+
+        Topology tolology = greetingApp.createTopology();
         testDriver=new TopologyTestDriver(tolology,config);
 
     }
