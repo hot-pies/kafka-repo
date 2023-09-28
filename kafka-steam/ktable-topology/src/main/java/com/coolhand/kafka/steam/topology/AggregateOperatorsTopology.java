@@ -21,9 +21,9 @@ public class AggregateOperatorsTopology {
 
 
         var groupString =inputStream
-//                .groupByKey(Grouped.with(Serdes.String(),Serdes.String()));
-                .groupBy((key,value)-> value,
-                    Grouped.with(Serdes.String(),Serdes.String()));
+                .groupByKey(Grouped.with(Serdes.String(),Serdes.String()));
+//                .groupBy((key,value)-> value,
+//                    Grouped.with(Serdes.String(),Serdes.String()));
 
 
         exploreCount(groupString);
