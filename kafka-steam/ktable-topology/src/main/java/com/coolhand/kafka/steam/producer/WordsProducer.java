@@ -3,10 +3,10 @@ package com.coolhand.kafka.steam.producer;
 import lombok.extern.slf4j.Slf4j;
 
 import static com.coolhand.kafka.steam.producer.ProducerUtil.publishMessageSync;
-import static com.coolhand.kafka.steam.topology.AggregateOperatorsTopology.WORDS;
+import static com.coolhand.kafka.steam.topology.KTableTopology.WORDS;
 
 @Slf4j
-public class AggregateProducer {
+public class WordsProducer {
 
     public static void main(String[] args) {
 
@@ -25,8 +25,8 @@ public class AggregateProducer {
         var recordMetaData2 = publishMessageSync(WORDS, key,word2);
         log.info("Published the alphabet message : {} ", recordMetaData2);
 
-        //var bKey = "B";
-        String bKey = null;
+        var bKey = "B";
+//        String bKey = null;
 
         var bWord1 = "Bus";
         var bWord2 = "Baby";

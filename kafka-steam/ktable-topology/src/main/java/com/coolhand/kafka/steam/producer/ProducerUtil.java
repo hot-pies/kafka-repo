@@ -17,7 +17,7 @@ public class ProducerUtil {
     private static Properties producerProps() {
 
         Properties config=new Properties();
-        config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "92.168.55.11:9092");
+        config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "192.168.55.11:9092");
         config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         return config;
