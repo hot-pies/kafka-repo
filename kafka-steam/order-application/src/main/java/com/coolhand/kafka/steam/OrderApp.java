@@ -1,5 +1,6 @@
 package com.coolhand.kafka.steam;
 
+import com.coolhand.kafka.steam.exceptionhandler.StreamDeserialiazationExceptionHandler;
 import com.coolhand.kafka.steam.topology.OrderTopology;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.admin.AdminClient;
@@ -26,7 +27,7 @@ public class OrderApp {
         streamConfig.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
         streamConfig.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG,Serdes.String().getClass());
         streamConfig.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG,"earliest");
-        streamConfig.put(StreamsConfig.DEFAULT_DESERIALIZATION_EXCEPTION_HANDLER_CLASS_CONFIG,"earliest");
+        streamConfig.put(StreamsConfig.DEFAULT_DESERIALIZATION_EXCEPTION_HANDLER_CLASS_CONFIG, StreamDeserialiazationExceptionHandler.class);
 
 
 //        Create Topic if not exist

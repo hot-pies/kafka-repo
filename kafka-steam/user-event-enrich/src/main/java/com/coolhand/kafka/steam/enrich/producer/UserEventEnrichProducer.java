@@ -75,11 +75,11 @@ public class UserEventEnrichProducer {
             }
     }
 
-    private static ProducerRecord<String,String> userRecords(String key, String value){
+    public static ProducerRecord<String,String> userRecords(String key, String value){
         return new ProducerRecord<>(USER_TOPIC_NAME,key,value);
     }
 
-    private static ProducerRecord<String,String> purchase(String key,String value ){
+    public static ProducerRecord<String,String> purchase(String key,String value ){
         return new ProducerRecord<>(PURCHASE_TOPIC_NAME,key,value);
     }
 }

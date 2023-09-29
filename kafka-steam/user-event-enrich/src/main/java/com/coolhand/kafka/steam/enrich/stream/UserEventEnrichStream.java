@@ -16,7 +16,7 @@ public class UserEventEnrichStream {
     static String BOOTSTRAP_SERVER="192.168.55.11:9092";
     static String USER_TABLE="user-table";
     static String USER_PURCHASE="user-purchase";
-    private static Topology createTopology(){
+    public static Topology createTopology(){
 
         StreamsBuilder builder=new StreamsBuilder();
 

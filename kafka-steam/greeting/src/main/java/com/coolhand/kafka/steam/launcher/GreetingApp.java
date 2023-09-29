@@ -1,5 +1,6 @@
 package com.coolhand.kafka.steam.launcher;
 
+import com.coolhand.kafka.steam.exceptionhandler.StreamDeserializerExceptionHandler;
 import com.coolhand.kafka.steam.topology.GreetingTopology;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.admin.AdminClient;
@@ -27,7 +28,7 @@ public class GreetingApp {
         streamConfig.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
         streamConfig.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG,Serdes.String().getClass());
         streamConfig.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG,"earliest");
-
+        streamConfig.put(StreamsConfig.DEFAULT_DESERIALIZATION_EXCEPTION_HANDLER_CLASS_CONFIG, StreamDeserializerExceptionHandler.class);
 //        createTopic(streamConfig,List.of(GREETINGS,GREETINGS_UPPERCASE,GREETINGS_SPANISH));
 
         GreetingTopology greetingApp=new GreetingTopology();
