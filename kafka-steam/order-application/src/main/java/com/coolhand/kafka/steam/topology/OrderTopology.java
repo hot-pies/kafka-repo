@@ -3,12 +3,17 @@ package com.coolhand.kafka.steam.topology;
 import com.coolhand.kafka.steam.domain.Order;
 import com.coolhand.kafka.steam.domain.OrderType;
 import com.coolhand.kafka.steam.domain.Revenue;
+import com.coolhand.kafka.steam.domain.TotalRevenue;
 import com.coolhand.kafka.steam.serdes.SerdesFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.serialization.Serdes;
+import org.apache.kafka.common.utils.Bytes;
+import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.kstream.*;
+import org.apache.kafka.streams.processor.To;
+import org.apache.kafka.streams.state.KeyValueStore;
 
 @Slf4j
 public class OrderTopology {
@@ -30,7 +35,7 @@ public class OrderTopology {
 
 
 
-    public static Topology buildTopology(){
+    public static Topology build(){
 
         Predicate<String,Order> generalPredicate  = (key,order) -> order.orderType().equals(OrderType.GENERAL);
         Predicate<String,Order> resturantPredicate = (key,order)-> order.orderType().equals(OrderType.RESTAURANT);
@@ -53,10 +58,12 @@ public class OrderTopology {
                             generalOrderStream
                                     .print(Printed.<String,Order>toSysOut().withLabel("generalStream : "));
 
-                            generalOrderStream
-                                    .mapValues((ReadOnlyKey,value)-> revenueValueMapper.apply(value))
-                                    .to(GENERAL_ORDER,
-                                            Produced.with(Serdes.String(),SerdesFactory.revenueSerdes()));
+//                            generalOrderStream
+//                                    .mapValues((ReadOnlyKey,value)-> revenueValueMapper.apply(value))
+//                                    .to(GENERAL_ORDER,
+//                                            Produced.with(Serdes.String(),SerdesFactory.revenueSerdes()));
+                            aggregateOrderByCount(generalOrderStream,GENERAL_ORDER_COUNT);
+                            aggregateOrderByRevenue(generalOrderStream,GENERAL_ORDER_REVENUE);
 
                 })
                 ).branch(resturantPredicate,
@@ -64,9 +71,11 @@ public class OrderTopology {
                             restaurantOrderStream
                                     .print(Printed.<String,Order>toSysOut().withLabel("restaurantStream : "));
 
-                            restaurantOrderStream
-                                    .mapValues((key,value)-> revenueValueMapper.apply(value))
-                                    .to(RESTAURANT_ORDER,Produced.with(Serdes.String(),SerdesFactory.revenueSerdes()));
+//                            restaurantOrderStream
+//                                    .mapValues((key,value)-> revenueValueMapper.apply(value))
+//                                    .to(RESTAURANT_ORDER,Produced.with(Serdes.String(),SerdesFactory.revenueSerdes()));
+                            aggregateOrderByCount(restaurantOrderStream,RESTAURANT_ORDER_COUNT);
+                            aggregateOrderByRevenue(restaurantOrderStream,RESTAURANT_ORDER_REVENUE);
 
                         })
                 );
@@ -74,5 +83,39 @@ public class OrderTopology {
 
         return streamsBuilder.build();
 
+    }
+
+    private static void aggregateOrderByRevenue(KStream<String, Order> orderStream, String storeName) {
+        Initializer<TotalRevenue> orderInitializer = TotalRevenue::new;
+        Aggregator<String,Order,TotalRevenue> aggregator
+                = (key,value,aggregate) -> aggregate.updateRunningRevenue(key,value);
+
+       var revenueTable= orderStream
+                .map((key,value)->KeyValue.pair(value.locationId(),value))
+                .groupByKey(Grouped.with(Serdes.String(),SerdesFactory.orderSerdes()))
+                .aggregate(
+                        orderInitializer,
+                        aggregator,
+                        Materialized.<String,TotalRevenue, KeyValueStore<Bytes,byte[]>>as(storeName)
+                                .withKeySerde(Serdes.String())
+                                .withValueSerde(SerdesFactory.totalRevenueSerdes())
+                );
+
+        revenueTable
+                .toStream()
+                .print(Printed.<String, TotalRevenue>toSysOut().withLabel(storeName));
+
+
+    }
+
+    private static void aggregateOrderByCount(KStream<String, Order> generalOrderStream, String storeName) {
+        var ordersCountPerStore = generalOrderStream
+                .map((key, value) -> KeyValue.pair(value.locationId(),value))
+                .groupByKey(Grouped.with(Serdes.String(),SerdesFactory.orderSerdes()))
+                .count(Named.as(storeName),Materialized.as(storeName));
+
+        ordersCountPerStore
+                .toStream()
+                .print(Printed.<String ,Long>toSysOut().withLabel(storeName));
     }
 }

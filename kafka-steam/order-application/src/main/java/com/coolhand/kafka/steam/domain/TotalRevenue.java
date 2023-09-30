@@ -14,4 +14,5 @@ public record TotalRevenue(String locationId,
         var newRevenue=this.runningRevenue.add(order.finalAmount());
         return new TotalRevenue(key,newOrderCount,newRevenue);
     }
+
 }
