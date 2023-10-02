@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: greetings-application
+  profiles:
+    active: local
+
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+  kafka:
+    bootstrap-servers: 192.168.55.11:9092
+    streams:
+      application-id: greetings-application
+
+
