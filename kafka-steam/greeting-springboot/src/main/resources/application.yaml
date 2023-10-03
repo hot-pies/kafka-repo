@@ -9,9 +9,15 @@ spring:
   config:
     activate:
       on-profile: local
+
   kafka:
     bootstrap-servers: 192.168.55.11:9092
     streams:
-      application-id: greetings-application
-
-
+      bootstrap-servers: 192.168.55.11:9092
+      application-id: greetings-stream-application
+    properties:
+      default:
+        deserialization:
+          exception:
+#            handler: com.coolhand.kafka.steam.greetingspringboot.exceptionhandler.StreamDeserializerExceptionHandler
+#            handler: org.apache.kafka.streams.errors.LogAndContinueExceptionHandler
