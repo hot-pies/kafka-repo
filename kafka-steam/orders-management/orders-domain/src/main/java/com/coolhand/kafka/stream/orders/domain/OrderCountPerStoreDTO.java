@@ -1,2 +1,5 @@
-package com.coolhand.kafka.stream.orders.domain;public class OrderCountPerStoreDTO {
+package com.coolhand.kafka.stream.orders.domain;
+
+public record OrderCountPerStoreDTO(String locationId,
+                                    Long orderCount) {
 }
