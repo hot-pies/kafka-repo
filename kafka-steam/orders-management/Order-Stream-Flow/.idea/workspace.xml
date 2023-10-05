@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="c912ff61-d57f-40a0-bbe9-fa40540405bb" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../Order-Stream-Flow.zip" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gradlew" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gradlew.bat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../order-management/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../order-management/build.gradle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../order-management/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../order-management/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../order-management/gradlew" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../order-management/gradlew.bat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../order-management/settings.gradle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../order-management/src/main/java/com/coolhand/kafka/steam/ordermanagement/OrderManagementApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../order-management/src/main/java/com/coolhand/kafka/steam/ordermanagement/config/OrderManagementConfiguration.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../order-management/src/main/java/com/coolhand/kafka/steam/ordermanagement/controller/OrderController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../order-management/src/main/java/com/coolhand/kafka/steam/ordermanagement/domain/Address.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../order-management/src/main/java/com/coolhand/kafka/steam/ordermanagement/domain/Order.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../order-management/src/main/java/com/coolhand/kafka/steam/ordermanagement/domain/OrderLineItem.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../order-management/src/main/java/com/coolhand/kafka/steam/ordermanagement/domain/OrderType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../order-management/src/main/java/com/coolhand/kafka/steam/ordermanagement/domain/Revenue.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../order-management/src/main/java/com/coolhand/kafka/steam/ordermanagement/domain/Store.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../order-management/src/main/java/com/coolhand/kafka/steam/ordermanagement/domain/TotalRevenue.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../order-management/src/main/java/com/coolhand/kafka/steam/ordermanagement/domain/TotalRevenueWIthAddress.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../order-management/src/main/java/com/coolhand/kafka/steam/ordermanagement/producer/OrderMockDataProducer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../order-management/src/main/java/com/coolhand/kafka/steam/ordermanagement/producer/ProducerUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../order-management/src/main/java/com/coolhand/kafka/steam/ordermanagement/producer/StoreMockDataProducer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../order-management/src/main/java/com/coolhand/kafka/steam/ordermanagement/serdes/JsonDeserializer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../order-management/src/main/java/com/coolhand/kafka/steam/ordermanagement/serdes/JsonSerializer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../order-management/src/main/java/com/coolhand/kafka/steam/ordermanagement/serdes/SerdesFactory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../order-management/src/main/java/com/coolhand/kafka/steam/ordermanagement/service/OrderService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../order-management/src/main/java/com/coolhand/kafka/steam/ordermanagement/service/OrderStoreService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../order-management/src/main/java/com/coolhand/kafka/steam/ordermanagement/topology/OrderManagementTopology.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../order-management/src/main/resources/application.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../order-management/src/test/java/com/coolhand/kafka/steam/ordermanagement/OrderManagementApplicationTests.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../order-wise.zip" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../orders-domain.zip" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../orders-domain/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../orders-domain/build.gradle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../orders-domain/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../orders-domain/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../orders-domain/gradlew" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../orders-domain/gradlew.bat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../orders-domain/settings.gradle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../orders-domain/src/main/java/ordersdomain/OrdersDomainApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../orders-domain/src/main/resources/application.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../orders-domain/src/test/java/ordersdomain/OrdersDomainApplicationTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../greetings-with-springboot/.idea/workspace.xml" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <projects_view>
+          <tree_state>
+            <expand />
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2WK6t0njqYfbg6XniArPhW9RGuK" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "C:/Users/vivek/OneDrive/Documents/GitHub/kafka-repo/kafka-steam/orders-domain",
+    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="c912ff61-d57f-40a0-bbe9-fa40540405bb" name="Changes" comment="" />
+      <created>1696469134765</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1696469134765</updated>
+    </task>
+    <servers />
+  </component>
+</project>

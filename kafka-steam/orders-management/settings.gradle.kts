@@ -1,3 +1,2 @@
 rootProject.name = "orders-management"
-include("order-domain")
-include("Order-Stream-Flow")
+include("orders-domain","Order-Stream-Flow")
