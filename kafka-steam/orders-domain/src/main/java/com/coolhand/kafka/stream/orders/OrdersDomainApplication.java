@@ -1,13 +1,13 @@
-package OrderStreamFlow;
+package com.coolhand.kafka.stream.orders;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class OrderStreamFlowApplication {
+public class OrdersDomainApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(OrderStreamFlowApplication.class, args);
+		SpringApplication.run(OrdersDomainApplication.class, args);
 	}
 
 }
