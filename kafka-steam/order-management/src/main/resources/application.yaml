@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: Order-Management
+  profiles:
+    active:
+      - local
+---
+spring:
+  kafka:
+    streams:
+        
+
