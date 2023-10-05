@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: orders-management-stream
+  profiles:
+    active:
+      - local
+  kafka:
+    bootstrap-servers:
+      - 192.168.55.11:9092
+    consumer:
+      auto-offset-reset: latest
+    streams:
+      application-id: orders-management
+    properties:
+      default:
+        key:
+          serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+        value:
+          serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+
+
+
+
+
+
