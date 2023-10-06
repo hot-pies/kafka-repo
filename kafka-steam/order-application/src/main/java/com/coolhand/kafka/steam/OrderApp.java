@@ -1,6 +1,7 @@
 package com.coolhand.kafka.steam;
 
 import com.coolhand.kafka.steam.exceptionhandler.StreamDeserialiazationExceptionHandler;
+
 import com.coolhand.kafka.steam.topology.OrderTopology;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.admin.AdminClient;
@@ -32,10 +33,12 @@ public class OrderApp {
 
 //        Create Topic if not exist
 //        createTopics(streamConfig,List.of(OrderTopology.GENERAL_ORDER,OrderTopology.RESTAURANT_ORDER,OrderTopology.ORDERS));
+//        createTopics(streamConfig,List.of(GENERAL_ORDER_COUNT,RESTAURANT_ORDER_COUNT));
+//        createTopics(streamConfig,List.of(GENERAL_ORDER_REVENUE,RESTAURANT_ORDER_REVENUE));
 
         OrderTopology orderTopology=new OrderTopology();
 
-        KafkaStreams streams = new KafkaStreams(orderTopology.buildTopology(),streamConfig);
+        KafkaStreams streams = new KafkaStreams(orderTopology.build(),streamConfig);
         streams.cleanUp();
         streams.start();
 
