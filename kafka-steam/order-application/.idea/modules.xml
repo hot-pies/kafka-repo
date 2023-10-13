@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.coolhand.kafka.steam.order-application.test.iml" filepath="$PROJECT_DIR$/.idea/modules/com.coolhand.kafka.steam.order-application.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ktable-topology.main.iml" filepath="$PROJECT_DIR$/.idea/modules/ktable-topology.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/order-application.main.iml" filepath="$PROJECT_DIR$/.idea/modules/order-application.main.iml" />
     </modules>
   </component>

@@ -17,6 +17,8 @@ import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
+import static com.coolhand.kafka.steam.topology.OrderTopology.STORE;
+
 @Slf4j
 public class OrderApp {
     public static void main(String[] args) {
@@ -35,6 +37,7 @@ public class OrderApp {
 //        createTopics(streamConfig,List.of(OrderTopology.GENERAL_ORDER,OrderTopology.RESTAURANT_ORDER,OrderTopology.ORDERS));
 //        createTopics(streamConfig,List.of(GENERAL_ORDER_COUNT,RESTAURANT_ORDER_COUNT));
 //        createTopics(streamConfig,List.of(GENERAL_ORDER_REVENUE,RESTAURANT_ORDER_REVENUE));
+//        createTopics(streamConfig,List.of(STORE));
 
         OrderTopology orderTopology=new OrderTopology();
 
