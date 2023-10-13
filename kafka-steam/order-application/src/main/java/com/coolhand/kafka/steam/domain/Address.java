@@ -5,4 +5,7 @@ public record Address(String addressLine1,
                       String city,
                       String state,
                       String zip) {
+    public Address(){
+        this("","","","","");
+    }
 }

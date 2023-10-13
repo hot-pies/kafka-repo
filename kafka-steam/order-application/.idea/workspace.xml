@@ -5,11 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="02f130d1-3caf-46bd-9f89-10316ff08d40" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/coolhand/kafka/steam/util/OrderTimeStampExtractor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/resources/order-general.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/resources/order-restaurant.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ktable-topology/.gradle/8.0/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../ktable-topology/.gradle/8.0/checksums/checksums.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ktable-topology/.gradle/8.0/dependencies-accessors/dependencies-accessors.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../ktable-topology/.gradle/8.0/dependencies-accessors/dependencies-accessors.lock" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/coolhand/kafka/steam/domain/TotalCountWIthAddress.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ktable-topology/.gradle/8.0/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../ktable-topology/.gradle/8.0/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ktable-topology/.gradle/8.0/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../ktable-topology/.gradle/8.0/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../ktable-topology/.gradle/8.0/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../ktable-topology/.gradle/8.0/fileHashes/fileHashes.bin" afterDir="false" />
@@ -32,23 +28,17 @@
       <change beforePath="$PROJECT_DIR$/.gradle/8.0/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.0/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/coolhand/kafka/steam/OrderApp.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/coolhand/kafka/steam/OrderApp.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/coolhand/kafka/steam/producer/StoreMockDataProducer.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/coolhand/kafka/steam/producer/StoreMockDataProducer.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/coolhand/kafka/steam/serdes/SerdesFactory.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/coolhand/kafka/steam/serdes/SerdesFactory.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/coolhand/kafka/steam/domain/Address.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/coolhand/kafka/steam/domain/Address.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/coolhand/kafka/steam/domain/Store.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/coolhand/kafka/steam/domain/Store.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/coolhand/kafka/steam/producer/OrderMockDataProducer.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/coolhand/kafka/steam/producer/OrderMockDataProducer.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/coolhand/kafka/steam/topology/OrderTopology.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/coolhand/kafka/steam/topology/OrderTopology.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/libs/order-application-1.0-SNAPSHOT.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/compileTransaction/stash-dir/OrderApp.class.uniqueId1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/compileTransaction/stash-dir/OrderMockDataProducer.class.uniqueId2" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/compileTransaction/stash-dir/OrderTopology.class.uniqueId0" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/tmp/jar/MANIFEST.MF" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/coolhand/kafka/steam/OrderApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/coolhand/kafka/steam/OrderApp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/coolhand/kafka/steam/producer/StoreMockDataProducer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/coolhand/kafka/steam/producer/StoreMockDataProducer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/coolhand/kafka/steam/serdes/SerdesFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/coolhand/kafka/steam/serdes/SerdesFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/coolhand/kafka/steam/domain/Address.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/coolhand/kafka/steam/domain/Address.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/coolhand/kafka/steam/domain/Store.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/coolhand/kafka/steam/domain/Store.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/coolhand/kafka/steam/producer/OrderMockDataProducer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/coolhand/kafka/steam/producer/OrderMockDataProducer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/coolhand/kafka/steam/topology/OrderTopology.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/coolhand/kafka/steam/topology/OrderTopology.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -132,8 +122,11 @@
       <recent name="C:\Users\vivek\OneDrive\Documents\GitHub\kafka-repo\kafka-steam\order-application\src\main\resources" />
       <recent name="C:\Users\vivek\OneDrive\Documents\GitHub\kafka-repo\kafka-steam\order-application\src\main\java\com\coolhand\kafka\steam\serdes" />
     </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.coolhand.kafka.steam.domain" />
+    </key>
   </component>
-  <component name="RunManager" selected="Application.WindowsMockDataProduer">
+  <component name="RunManager" selected="Application.OrderApp">
     <configuration name="OrderApp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.coolhand.kafka.steam.OrderApp" />
       <module name="order-application.main" />

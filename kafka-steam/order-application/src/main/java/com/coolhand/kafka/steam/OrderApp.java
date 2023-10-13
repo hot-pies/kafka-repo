@@ -3,6 +3,7 @@ package com.coolhand.kafka.steam;
 import com.coolhand.kafka.steam.exceptionhandler.StreamDeserialiazationExceptionHandler;
 
 import com.coolhand.kafka.steam.topology.OrderTopology;
+import com.coolhand.kafka.steam.util.OrderTimeStampExtractor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.NewTopic;
@@ -17,7 +18,7 @@ import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
-import static com.coolhand.kafka.steam.topology.OrderTopology.STORE;
+import static com.coolhand.kafka.steam.topology.OrderTopology.*;
 
 @Slf4j
 public class OrderApp {
@@ -31,6 +32,7 @@ public class OrderApp {
         streamConfig.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG,Serdes.String().getClass());
         streamConfig.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG,"earliest");
         streamConfig.put(StreamsConfig.DEFAULT_DESERIALIZATION_EXCEPTION_HANDLER_CLASS_CONFIG, StreamDeserialiazationExceptionHandler.class);
+        streamConfig.put(StreamsConfig.DEFAULT_TIMESTAMP_EXTRACTOR_CLASS_CONFIG, OrderTimeStampExtractor.class);
 
 
 //        Create Topic if not exist
@@ -38,6 +40,9 @@ public class OrderApp {
 //        createTopics(streamConfig,List.of(GENERAL_ORDER_COUNT,RESTAURANT_ORDER_COUNT));
 //        createTopics(streamConfig,List.of(GENERAL_ORDER_REVENUE,RESTAURANT_ORDER_REVENUE));
 //        createTopics(streamConfig,List.of(STORE));
+//        createTopics(streamConfig,List.of(GENERAL_ORDER_COUNT_WINDOWS,RESTAURANT_ORDER_COUNT_WINDOWS));
+//        createTopics(streamConfig,List.of(GENERAL_ORDER_REVENUE_WINDOWS,RESTAURANT_ORDER_REVENUE_WINDOWS));
+
 
         OrderTopology orderTopology=new OrderTopology();
 

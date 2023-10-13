@@ -10,6 +10,11 @@ import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.kstream.*;
 import org.apache.kafka.streams.state.KeyValueStore;
+import org.apache.kafka.streams.state.WindowStore;
+
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @Slf4j
 public class OrderTopology {
@@ -63,7 +68,12 @@ public class OrderTopology {
 //                                    .to(GENERAL_ORDER,
 //                                            Produced.with(Serdes.String(),SerdesFactory.revenueSerdes()));
 //                            aggregateOrderByCount(generalOrderStream,GENERAL_ORDER_COUNT);
-                            aggregateOrderByRevenue(generalOrderStream,GENERAL_ORDER_REVENUE,storeTable);
+//                            aggregateOrderByRevenue(generalOrderStream,GENERAL_ORDER_REVENUE,storeTable);
+//                            aggregateOrderCountByTimeWindows(generalOrderStream,GENERAL_ORDER_COUNT_WINDOWS,storeTable);
+                            aggregateOrderByRevenueWindow(generalOrderStream,GENERAL_ORDER_REVENUE_WINDOWS,storeTable);
+
+
+
 
                 })
                 ).branch(resturantPredicate,
@@ -75,13 +85,84 @@ public class OrderTopology {
 //                                    .mapValues((key,value)-> revenueValueMapper.apply(value))
 //                                    .to(RESTAURANT_ORDER,Produced.with(Serdes.String(),SerdesFactory.revenueSerdes()));
 //                            aggregateOrderByCount(restaurantOrderStream,RESTAURANT_ORDER_COUNT);
-                            aggregateOrderByRevenue(restaurantOrderStream,RESTAURANT_ORDER_REVENUE,storeTable);
+//                            aggregateOrderByRevenue(restaurantOrderStream,RESTAURANT_ORDER_REVENUE,storeTable);
+//                            aggregateOrderCountByTimeWindows(restaurantOrderStream,RESTAURANT_ORDER_COUNT_WINDOWS,storeTable);
+                            aggregateOrderByRevenueWindow(restaurantOrderStream,RESTAURANT_ORDER_REVENUE_WINDOWS,storeTable);
 
                         })
                 );
 
 
         return streamsBuilder.build();
+
+    }
+
+    private static void aggregateOrderByRevenueWindow
+            (KStream<String, Order> orderStream, String storeName, KTable<String, Store> storeTable) {
+
+        Duration windowSize = Duration.ofSeconds(15);
+        TimeWindows timeWindows = TimeWindows.ofSizeWithNoGrace(windowSize);
+
+        Initializer<TotalRevenue> totalRevenueInitializer = TotalRevenue::new;
+        Aggregator<String,Order,TotalRevenue> aggregator
+                = (key,value,aggregate) -> aggregate.updateRunningRevenue(key,value);
+
+        var revenueTable= orderStream
+                .map((key,value)->KeyValue.pair(value.locationId(),value))
+                .groupByKey(Grouped.with(Serdes.String(), SerdesFactory.orderSerdes()))
+                .windowedBy(timeWindows)
+                .aggregate(
+                        totalRevenueInitializer,
+                        aggregator,
+                        Materialized.<String,TotalRevenue, WindowStore<Bytes,byte[]>>as(storeName)
+                                .withKeySerde(Serdes.String())
+                                .withValueSerde(SerdesFactory.totalRevenueSerdes())
+                );
+
+//       KTABLE - KTABLE Join
+//        ValueJoiner<TotalRevenue,Store, TotalRevenueWIthAddress> valueJoiner=TotalRevenueWIthAddress::new;
+//
+//        var totalReviewWIthStore=revenueTable
+//                .join(storeTable,valueJoiner);
+//
+//        totalReviewWIthStore
+//                .toStream()
+//                .print(Printed.<String,TotalRevenueWIthAddress>toSysOut().withLabel(storeName+"ByStoreName"));
+//
+//
+        revenueTable
+                .toStream()
+                .peek((key, value) -> {
+                    log.info("Store Name : {} , Key : {} , Value :{}",storeName,key,value);
+                    printLocalDateTimes(key,value);
+                })
+                .print(Printed.<Windowed<String>, TotalRevenue>toSysOut().withLabel(storeName));
+    }
+
+    private static void aggregateOrderCountByTimeWindows
+            (KStream<String, Order> generalOrderStream, String storeName, KTable<String, Store> storeTable) {
+
+        Duration windowSize = Duration.ofSeconds(15);
+        TimeWindows timeWindows = TimeWindows.ofSizeWithNoGrace(windowSize);
+
+        var ordersCountPerStore = generalOrderStream
+                .map((key, value) -> KeyValue.pair(value.locationId(),value))
+                .groupByKey(Grouped.with(Serdes.String(),SerdesFactory.orderSerdes()))
+                .windowedBy(timeWindows)
+                .count(Named.as(storeName),Materialized.as(storeName))
+                .suppress(Suppressed
+                        .untilWindowCloses(Suppressed.BufferConfig.unbounded().shutDownWhenFull()));
+
+        ordersCountPerStore
+                .toStream()
+//                .print(Printed.<String ,Long>toSysOut().withLabel(generalOrderCountWindows)
+                .peek((key, value) -> {
+                    log.info("Store Name : {} , Key : {} , Value :{}",storeName,key,value);
+                    printLocalDateTimes(key,value);
+                })
+                .print(Printed.<Windowed<String>,Long>toSysOut().withLabel(storeName));
+
+
 
     }
 
@@ -128,5 +209,18 @@ public class OrderTopology {
         ordersCountPerStore
                 .toStream()
                 .print(Printed.<String ,Long>toSysOut().withLabel(storeName));
+
+
+
+    }
+
+    private static void printLocalDateTimes(Windowed<String> key, Object value) {
+        var startTime = key.window().startTime();
+        var endTime = key.window().endTime();
+        log.info("startTime : {} , endTime : {} , cout : {} ",startTime,endTime,value);
+
+        LocalDateTime startLDT = LocalDateTime.ofInstant(startTime, ZoneId.of(ZoneId.SHORT_IDS.get("PST")));
+        LocalDateTime endLDT = LocalDateTime.ofInstant(endTime, ZoneId.of(ZoneId.SHORT_IDS.get("PST")));
+        log.info("startLDT : {} , endLDT : {}, Count : {}", startLDT, endLDT, value);
     }
 }
