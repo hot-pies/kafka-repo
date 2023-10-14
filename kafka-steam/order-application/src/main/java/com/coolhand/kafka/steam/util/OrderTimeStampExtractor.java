@@ -26,6 +26,7 @@ public class OrderTimeStampExtractor implements TimestampExtractor {
         return partitionTime;
     }
 
+    //Hello we are getting
     private long convertToInstantTimeStampPST(LocalDateTime timeStamp) {
         return timeStamp.toInstant(ZoneOffset.ofHours(-7)).toEpochMilli();
     }

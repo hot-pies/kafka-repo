@@ -32,7 +32,7 @@ public class OrderApp {
         streamConfig.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG,Serdes.String().getClass());
         streamConfig.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG,"earliest");
         streamConfig.put(StreamsConfig.DEFAULT_DESERIALIZATION_EXCEPTION_HANDLER_CLASS_CONFIG, StreamDeserialiazationExceptionHandler.class);
-        streamConfig.put(StreamsConfig.DEFAULT_TIMESTAMP_EXTRACTOR_CLASS_CONFIG, OrderTimeStampExtractor.class);
+//        streamConfig.put(StreamsConfig.DEFAULT_TIMESTAMP_EXTRACTOR_CLASS_CONFIG, OrderTimeStampExtractor.class);
 
 
 //        Create Topic if not exist

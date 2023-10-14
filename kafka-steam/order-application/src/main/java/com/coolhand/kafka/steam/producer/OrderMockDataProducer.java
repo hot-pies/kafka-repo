@@ -25,8 +25,8 @@ public class OrderMockDataProducer {
                 .registerModule(new JavaTimeModule())
                 .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS,false);
 
-//        publishOrder(objectMapper,buildOrders());
-        publishBulkOrders(objectMapper);
+        publishOrder(objectMapper,buildOrders());
+//        publishBulkOrders(objectMapper);
     }
 
     private static void publishFutureRecords(ObjectMapper objectMapper){

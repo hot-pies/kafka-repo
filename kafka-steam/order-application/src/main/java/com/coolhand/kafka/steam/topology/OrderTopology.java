@@ -2,6 +2,7 @@ package com.coolhand.kafka.steam.topology;
 
 import com.coolhand.kafka.steam.domain.*;
 import com.coolhand.kafka.steam.serdes.SerdesFactory;
+import com.coolhand.kafka.steam.util.OrderTimeStampExtractor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.common.utils.Bytes;
@@ -44,6 +45,7 @@ public class OrderTopology {
         StreamsBuilder streamsBuilder = new StreamsBuilder();
         var ordersStream = streamsBuilder
                 .stream(ORDERS, Consumed.with(Serdes.String(), SerdesFactory.orderSerdes())
+                        .withTimestampExtractor(new OrderTimeStampExtractor())
                 )
                 .selectKey((key,value)->value.locationId());
 
@@ -120,16 +122,15 @@ public class OrderTopology {
                 );
 
 //       KTABLE - KTABLE Join
-//        ValueJoiner<TotalRevenue,Store, TotalRevenueWIthAddress> valueJoiner=TotalRevenueWIthAddress::new;
-//
-//        var totalReviewWIthStore=revenueTable
-//                .join(storeTable,valueJoiner);
-//
-//        totalReviewWIthStore
-//                .toStream()
-//                .print(Printed.<String,TotalRevenueWIthAddress>toSysOut().withLabel(storeName+"ByStoreName"));
-//
-//
+        ValueJoiner<TotalRevenue,Store, TotalRevenueWIthAddress> valueJoiner=TotalRevenueWIthAddress::new;
+        var joinParam =Joined.with(Serdes.String(),SerdesFactory.totalRevenueSerdes(),SerdesFactory.storeSerdes());
+
+        revenueTable
+                .toStream()
+                .map((key, value) -> KeyValue.pair(key.key(),value))
+                .join(storeTable,valueJoiner,joinParam)
+                .print(Printed.<String,TotalRevenueWIthAddress>toSysOut().withLabel(storeName+"ByStoreName"));
+
         revenueTable
                 .toStream()
                 .peek((key, value) -> {
