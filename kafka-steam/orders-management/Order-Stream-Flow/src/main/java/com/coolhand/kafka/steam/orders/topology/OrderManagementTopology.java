@@ -26,11 +26,11 @@ public class OrderManagementTopology {
 
     public static final String ORDER="order";
     public static final String ORDERS="orders";
+    public static final String STORE="stores";
     public static final String GENERAL_ORDER="general_orders";
     public static final String GENERAL_ORDER_COUNT="general_orders_count";
-    public static final String GENERAL_ORDER_COUNT_WINDOWS="general_orders_count_window";
     public static final String GENERAL_ORDER_REVENUE="general_orders_revenue";
-    public static final String STORE="stores";
+    public static final String GENERAL_ORDER_COUNT_WINDOWS="general_orders_count_window";
     public static final String GENERAL_ORDER_REVENUE_WINDOWS="general_orders_revenue_window";
     public static final String RESTAURANT_ORDER="restaurant_orders";
     public static final String RESTAURANT_ORDER_COUNT="restaurant_orders_count";
@@ -41,14 +41,8 @@ public class OrderManagementTopology {
 
     @Autowired
     public void process(StreamsBuilder streamsBuilder){
-//        getOrder(streamsBuilder);
+
         buildTopology(streamsBuilder);
-    }
-
-    public void getOrder(StreamsBuilder streamsBuilder){
-
-        var greeting = streamsBuilder.stream(ORDER);
-        greeting.print(Printed.toSysOut().withLabel("GREETING "));
     }
 
     public static Topology buildTopology(StreamsBuilder streamsBuilder){
@@ -56,7 +50,6 @@ public class OrderManagementTopology {
         Predicate<String, Order> generalPredicate  = (key, order) -> order.orderType().equals(OrderType.GENERAL);
         Predicate<String,Order> resturantPredicate = (key,order)-> order.orderType().equals(OrderType.RESTAURANT);
 
-        ValueMapper<Order, Revenue> revenueValueMapper = order -> new Revenue(order.locationId(),order.finalAmount());
 
         var ordersStream = streamsBuilder
                 .stream(ORDERS,
@@ -78,6 +71,8 @@ public class OrderManagementTopology {
                 .toStream()
                 .print(Printed.<String , Store>toSysOut().withLabel("orders :"));
 
+        ValueMapper<Order, Revenue> revenueValueMapper = order -> new Revenue(order.locationId(),order.finalAmount());
+
         ordersStream
                 .split(Named.as("General-Restaurant-Stream"))
                 .branch(generalPredicate,
@@ -89,6 +84,7 @@ public class OrderManagementTopology {
                                     .mapValues((ReadOnlyKey,value)-> revenueValueMapper.apply(value))
                                     .to(GENERAL_ORDER,
                                             Produced.with(Serdes.String(),new JsonSerde<>(Revenue.class)));
+
                             aggregateOrderByCount(generalOrderStream, GENERAL_ORDER_COUNT);
                             aggregateOrderCountByTimeWindows(generalOrderStream, GENERAL_ORDER_COUNT_WINDOWS);
                             aggregateOrderByRevenue(generalOrderStream, GENERAL_ORDER_REVENUE, storeTable);
@@ -100,14 +96,14 @@ public class OrderManagementTopology {
                                     .print(Printed.<String,Order>toSysOut().withLabel("restaurantStream : "));
 
                             restaurantOrderStream
-                                    .mapValues((key,value)-> revenueValueMapper.apply(value))
+                                    .mapValues((ReadOnlyKey,value)-> revenueValueMapper.apply(value))
                                     .to(RESTAURANT_ORDER,
                                             Produced.with(Serdes.String(),new JsonSerde<>(Revenue.class)));
 
-                            aggregateOrderByCount(restaurantOrderStream,RESTAURANT_ORDER_COUNT);
-                            aggregateOrderByRevenue(restaurantOrderStream,RESTAURANT_ORDER_COUNT,storeTable);
-                            aggregateOrderCountByTimeWindows(restaurantOrderStream,RESTAURANT_ORDER_COUNT_WINDOWS);
-                            aggregateOrderByRevenueWindow(restaurantOrderStream,RESTAURANT_ORDER_REVENUE_WINDOWS,storeTable);
+                            aggregateOrderByCount(restaurantOrderStream, RESTAURANT_ORDER_COUNT);
+                            aggregateOrderCountByTimeWindows(restaurantOrderStream, RESTAURANT_ORDER_COUNT_WINDOWS);
+                            aggregateOrderByRevenue(restaurantOrderStream, RESTAURANT_ORDER_REVENUE, storeTable);
+                            aggregateOrderByRevenueWindow(restaurantOrderStream, RESTAURANT_ORDER_REVENUE_WINDOWS, storeTable);
                         })
                 );
         return streamsBuilder.build();
