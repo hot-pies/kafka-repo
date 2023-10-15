@@ -1,6 +1,7 @@
 package com.coolhand.kafka.steam.orders.controller;
 
 import com.coolhand.kafka.steam.orders.service.OrderService;
+import com.coolhand.kafka.stream.orders.domain.AllOrdersCountPerStoreDTO;
 import com.coolhand.kafka.stream.orders.domain.OrderCountPerStoreDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,5 +35,10 @@ public class OrderManagementController {
         }
 
         return ResponseEntity.ok(orderService.getOrderCount(orderType));
+    }
+
+    @GetMapping("count")
+    public List<AllOrdersCountPerStoreDTO> allOrderCount(){
+        return orderService.getAllOrderCount();
     }
 }

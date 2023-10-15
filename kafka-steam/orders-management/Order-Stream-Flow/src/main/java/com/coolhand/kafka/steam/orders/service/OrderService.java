@@ -1,12 +1,17 @@
 package com.coolhand.kafka.steam.orders.service;
 
+import com.coolhand.kafka.stream.orders.domain.AllOrdersCountPerStoreDTO;
 import com.coolhand.kafka.stream.orders.domain.OrderCountPerStoreDTO;
+import com.coolhand.kafka.stream.orders.domain.OrderType;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Spliterators;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import static com.coolhand.kafka.steam.orders.topology.OrderManagementTopology.*;
@@ -47,5 +52,27 @@ public class OrderService {
             return new OrderCountPerStoreDTO(locationId,ordersCount);
         }
         return null;
+    }
+
+    public List<AllOrdersCountPerStoreDTO> getAllOrderCount() {
+
+        BiFunction<OrderCountPerStoreDTO, OrderType, AllOrdersCountPerStoreDTO>
+                mapper =(orderCountPerStoreDTO,orderType) ->new AllOrdersCountPerStoreDTO(
+                orderCountPerStoreDTO.locationId(),orderCountPerStoreDTO.orderCount(),orderType);
+
+        var generalOrderCount= getOrderCount(GENERAL_ORDER)
+                .stream()
+                .map(orderCountPerStoreDTO -> mapper.apply(orderCountPerStoreDTO,OrderType.GENERAL))
+                .toList();
+
+        var restaurantOrderCount= getOrderCount(RESTAURANT_ORDER)
+                .stream()
+                .map(orderCountPerStoreDTO -> mapper.apply(orderCountPerStoreDTO,OrderType.RESTAURANT))
+                .toList();
+
+        return Stream.of(generalOrderCount,restaurantOrderCount)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
+
     }
 }
