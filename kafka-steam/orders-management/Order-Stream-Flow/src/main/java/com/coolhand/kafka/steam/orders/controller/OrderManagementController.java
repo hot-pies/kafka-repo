@@ -25,9 +25,8 @@ public class OrderManagementController {
         this.orderService = orderService;
     }
 
-    @GetMapping("cout/{order_type}")
+    @GetMapping("count/{order_type}")
     public List<OrderCountPerStoreDTO> orderCount(@PathVariable("order_type") String orderType){
-
         return orderService.getOrderCount(orderType);
     }
 }
