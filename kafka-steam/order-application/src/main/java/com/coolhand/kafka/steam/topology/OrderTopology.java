@@ -122,14 +122,14 @@ public class OrderTopology {
                 );
 
 //       KTABLE - KTABLE Join
-        ValueJoiner<TotalRevenue,Store, TotalRevenueWIthAddress> valueJoiner=TotalRevenueWIthAddress::new;
+        ValueJoiner<TotalRevenue,Store, TotalRevenueWithAddress> valueJoiner=TotalRevenueWithAddress::new;
         var joinParam =Joined.with(Serdes.String(),SerdesFactory.totalRevenueSerdes(),SerdesFactory.storeSerdes());
 
         revenueTable
                 .toStream()
                 .map((key, value) -> KeyValue.pair(key.key(),value))
                 .join(storeTable,valueJoiner,joinParam)
-                .print(Printed.<String,TotalRevenueWIthAddress>toSysOut().withLabel(storeName+"ByStoreName"));
+                .print(Printed.<String,TotalRevenueWithAddress>toSysOut().withLabel(storeName+"ByStoreName"));
 
         revenueTable
                 .toStream()
@@ -184,14 +184,14 @@ public class OrderTopology {
                 );
 
 //       KTABLE - KTABLE Join
-        ValueJoiner<TotalRevenue,Store, TotalRevenueWIthAddress> valueJoiner=TotalRevenueWIthAddress::new;
+        ValueJoiner<TotalRevenue,Store, TotalRevenueWithAddress> valueJoiner=TotalRevenueWithAddress::new;
 
         var totalReviewWIthStore=revenueTable
                 .join(storeTable,valueJoiner);
 
         totalReviewWIthStore
                 .toStream()
-                        .print(Printed.<String,TotalRevenueWIthAddress>toSysOut().withLabel(storeName+"ByStoreName"));
+                        .print(Printed.<String,TotalRevenueWithAddress>toSysOut().withLabel(storeName+"ByStoreName"));
 
 
         revenueTable
