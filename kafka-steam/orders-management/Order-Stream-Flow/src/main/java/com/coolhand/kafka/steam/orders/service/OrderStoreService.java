@@ -5,7 +5,9 @@ import org.apache.kafka.streams.state.QueryableStoreType;
 import org.apache.kafka.streams.state.QueryableStoreTypes;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 import org.springframework.kafka.config.StreamsBuilderFactoryBean;
+import org.springframework.stereotype.Service;
 
+@Service
 public class OrderStoreService {
 
     StreamsBuilderFactoryBean streamsBuilderFactoryBean;

@@ -20,13 +20,14 @@ public class OrderManagementController {
 
     @Autowired
     private OrderService orderService;
+
+    public OrderManagementController(OrderService orderService) {
+        this.orderService = orderService;
+    }
+
     @GetMapping("cout/{order_type}")
     public List<OrderCountPerStoreDTO> orderCount(@PathVariable("order_type") String orderType){
 
-        orderService.getOrderCount(orderType);
-        return null;
+        return orderService.getOrderCount(orderType);
     }
-
-
-
 }
