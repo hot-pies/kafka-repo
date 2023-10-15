@@ -37,4 +37,15 @@ public class OrderService {
             default -> throw new IllegalStateException("Not a valid option");
         };
     }
+
+    public OrderCountPerStoreDTO getOrderCountByLocationID(String orderType, String locationId) {
+
+        var orderCountStore= getOrderStore(orderType);
+        var ordersCount = orderCountStore.get(orderType);
+
+        if(ordersCount!=null){
+            return new OrderCountPerStoreDTO(locationId,ordersCount);
+        }
+        return null;
+    }
 }

@@ -4,10 +4,9 @@ import com.coolhand.kafka.steam.orders.service.OrderService;
 import com.coolhand.kafka.stream.orders.domain.OrderCountPerStoreDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,7 +25,14 @@ public class OrderManagementController {
     }
 
     @GetMapping("count/{order_type}")
-    public List<OrderCountPerStoreDTO> orderCount(@PathVariable("order_type") String orderType){
-        return orderService.getOrderCount(orderType);
+    public ResponseEntity<?> orderCount(
+            @PathVariable("order_type") String orderType,
+            @RequestParam(value="location_id",required = false) String locationId){
+
+        if (StringUtils.hasLength(locationId)) {
+            return ResponseEntity.ok(orderService.getOrderCountByLocationID(orderType,locationId));
+        }
+
+        return ResponseEntity.ok(orderService.getOrderCount(orderType));
     }
 }
