@@ -199,7 +199,7 @@ public class OrderManagementTopology {
 //       KTABLE - KTABLE Join
         ValueJoiner<TotalRevenue,Store,TotalRevenueWithAddress> valueJoiner = TotalRevenueWithAddress::new;
 
-        var joinParam =Joined.with(Serdes.String(),new JsonSerde<>(TotalRevenue.class), new JsonSerde<Store>(Store.class));
+        var joinParam =Joined.with(Serdes.String(),new JsonSerde<>(TotalRevenue.class), new JsonSerde<>(Store.class));
 
         revenueTable
                 .toStream()

@@ -1,8 +1,7 @@
 package com.coolhand.kafka.steam.orders.service;
 
-import com.coolhand.kafka.stream.orders.domain.AllOrdersCountPerStoreDTO;
-import com.coolhand.kafka.stream.orders.domain.OrderCountPerStoreDTO;
-import com.coolhand.kafka.stream.orders.domain.OrderType;
+import com.coolhand.kafka.stream.orders.domain.*;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +14,7 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import static com.coolhand.kafka.steam.orders.topology.OrderManagementTopology.*;
+@Slf4j
 @Service
 public class OrderService {
 
@@ -33,6 +33,7 @@ public class OrderService {
         return StreamSupport.stream(spliterator,false)
                 .map(keyValue -> new OrderCountPerStoreDTO(keyValue.key, keyValue.value))
                 .collect(Collectors.toList());
+
     }
 
     private ReadOnlyKeyValueStore<String ,Long> getOrderStore(String orderType) {
@@ -74,5 +75,53 @@ public class OrderService {
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
 
+    }
+
+    public List<OrderRevenueDTO> getRevenueByOrderType(String orderType) {
+
+        var revenueStoreByType =getRevenueStore(orderType);
+
+        var revenueIterator = revenueStoreByType.all();
+        var spliterator = Spliterators.spliteratorUnknownSize(revenueIterator, 0);
+        return StreamSupport.stream(spliterator, false)
+                .map(keyValue ->{
+                    log.info("cooland keyValue.value : ",keyValue.value);
+                    var value=keyValue.value;
+                    log.info("cooland locationId : ",value.locationId());
+                    log.info("cooland updateRunningRevenue : ",value.runnuingOrderCount());
+                    log.info("cooland runningRevenue : ",value.runningRevenue());
+                    return new OrderRevenueDTO(keyValue.key, mapOrderType(orderType), value);
+                })
+
+                .collect(Collectors.toList());
+
+    }
+
+    public static OrderType mapOrderType(String orderType) {
+        return switch (orderType){
+            case GENERAL_ORDER -> OrderType.GENERAL;
+            case RESTAURANT_ORDER -> OrderType.RESTAURANT;
+            default -> throw new IllegalStateException("Not a valid option");
+        };
+    }
+
+    private ReadOnlyKeyValueStore<String , TotalRevenue> getRevenueStore(String orderType) {
+        log.info("CoolHand getRevenueStore : ", orderType.toString());
+        return switch (orderType){
+            case GENERAL_ORDER -> orderStoreService.orderRevenueStore(GENERAL_ORDER_REVENUE);
+            case RESTAURANT_ORDER -> orderStoreService.orderRevenueStore(RESTAURANT_ORDER_COUNT);
+            default -> throw new IllegalStateException("Not a valid option");
+        };
+    }
+
+    public OrderRevenueDTO getRevenueByLocationId(String orderType, String locationId) {
+        var revenueStoreByType =getRevenueStore(orderType);
+
+        var totalRevenue = revenueStoreByType.get(locationId);
+        if (totalRevenue != null) {
+            return new OrderRevenueDTO(locationId,mapOrderType(orderType), totalRevenue);
+        } else {
+            return null;
+        }
     }
 }

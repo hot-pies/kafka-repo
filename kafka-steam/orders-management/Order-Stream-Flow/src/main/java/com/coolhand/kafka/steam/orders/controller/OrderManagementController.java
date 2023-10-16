@@ -25,7 +25,7 @@ public class OrderManagementController {
         this.orderService = orderService;
     }
 
-    @GetMapping("count/{order_type}")
+    @GetMapping("/count/{order_type}")
     public ResponseEntity<?> orderCount(
             @PathVariable("order_type") String orderType,
             @RequestParam(value="location_id",required = false) String locationId){
@@ -40,5 +40,19 @@ public class OrderManagementController {
     @GetMapping("count")
     public List<AllOrdersCountPerStoreDTO> allOrderCount(){
         return orderService.getAllOrderCount();
+    }
+
+    @GetMapping("/revenue/{order_type}")
+    public ResponseEntity<?> revenueByOrderType(
+            @PathVariable("order_type") String orderType,
+            @RequestParam(value = "location_id", required = false) String locationId
+    ) {
+        if (StringUtils.hasLength(locationId)) {
+            return ResponseEntity.ok(orderService.getRevenueByLocationId(orderType, locationId));
+        } else {
+
+            return ResponseEntity.ok(orderService.getRevenueByOrderType(orderType));
+
+        }
     }
 }
