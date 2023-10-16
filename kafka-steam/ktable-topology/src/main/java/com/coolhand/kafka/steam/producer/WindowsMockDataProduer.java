@@ -9,8 +9,8 @@ import static java.lang.Thread.sleep;
 public class WindowsMockDataProduer {
     public static void main(String[] args) {
 
-        bulkMockDataProducer();
-//        bulkMockDataProducer_SlidingWindows();
+//        bulkMockDataProducer();
+        bulkMockDataProducer_SlidingWindows();
     }
 
     private static void bulkMockDataProducer_SlidingWindows() {
