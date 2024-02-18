@@ -20,7 +20,7 @@ public class GreetingTopology {
     public static String GREETINGS_UPPERCASE = "greetings_uppercase";
 
 
-    public Topology createTopology(){
+    public static Topology createTopology(){
         StreamsBuilder builder=new StreamsBuilder();
 
 //        KStream<String, String> merge_greeting = getStringGreetingKStream(builder);
@@ -28,9 +28,13 @@ public class GreetingTopology {
 
         merge_greeting.peek((key,Greeting)-> log.info("After topic Merge key :{} , value : {} ",key,Greeting));
 
+        var modifiedStream=explorerErrrs(merge_greeting);
+
+        modifiedStream
+                .print(Printed.<String,Greeting>toSysOut().withLabel("modifiedStream"));
 
 //        var modified_greeting = greeting_stream
-        var modified_greeting = merge_greeting
+        var modified_greeting = modifiedStream
                 .mapValues((key,value)->
                         new Greeting(value.message().toUpperCase(),value.timeStamp()))
 //                .map((key,value)->KeyValue.pair(key.toUpperCase(),value.toUpperCase()))
@@ -62,6 +66,23 @@ public class GreetingTopology {
 //        streamOut.to("greetings-output");
 
         return  builder.build();
+    }
+
+    private static KStream<String,Greeting> explorerErrrs(KStream<String, Greeting> mergeGreeting) {
+        return mergeGreeting
+                .mapValues((readOnlyKey, value) -> {
+                    if(value.message().equals("Transient Error")){
+                        try{
+                            throw new IllegalStateException(value.message());
+                        }catch (Exception e){
+                            log.error("Exception in explorerErrors : {} ",e.getMessage());
+                            return null;
+                        }
+
+                    }
+                    return new Greeting(value.message().toUpperCase(),value.timeStamp());
+                })
+                .filter((key, value) -> key!=null && value !=null);
     }
 
     private static KStream<String, String> getStringGreetingKStream(StreamsBuilder builder) {
