@@ -1,7 +1,6 @@
 package com.coolhand.kafka.admin.config;
 
-import java.util.Properties;
-
+import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.admin.DescribeClusterResult;
@@ -10,11 +9,10 @@ import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.stereotype.Component;
 
-import ch.qos.logback.classic.Logger;
-import lombok.extern.slf4j.Slf4j;
+import java.util.Properties;
 
 @Slf4j
-//@Component
+@Component
 public class KafkaHealthIndicator implements HealthIndicator   {
 
     private final String bootstrapServers = "192.168.144.100:9093";

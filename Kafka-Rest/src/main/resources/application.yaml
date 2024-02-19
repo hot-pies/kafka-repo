@@ -6,7 +6,7 @@ spring:
       - local
   kafka:
     bootstrap-servers:
-      - 192.168.144.100:9093
+#      - 192.168.144.100:9093
       - 192.168.55.12:9092
     consumer:
       auto-offset-reset: latest
