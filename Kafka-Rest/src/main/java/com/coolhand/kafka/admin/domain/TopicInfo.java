@@ -12,12 +12,13 @@ import java.util.Set;
 @Slf4j
 public record TopicInfo(
         String name,
+        boolean internal,
         List<PartitionInfo> partitionInfo,
         Set<AclOperation> authorizedOperations
 ) {
 
     public TopicInfo(TopicDescription topicDescription){
-        this(topicDescription.name(),partitionsInfo(topicDescription.partitions()),topicDescription.authorizedOperations());
+        this(topicDescription.name(),topicDescription.isInternal(),partitionsInfo(topicDescription.partitions()),topicDescription.authorizedOperations());
     }
 
     public Set<AclOperation>  authorizedOperations() {
@@ -31,6 +32,4 @@ public record TopicInfo(
         }
         return  topicPartitionInfoList;
     }
-
-
 }
